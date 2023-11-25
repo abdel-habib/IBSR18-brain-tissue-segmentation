@@ -518,8 +518,11 @@ class ElastixTransformix:
 
         # Get the names of the fixed and moving images for the output directory, names without the file extensions
         reg_fixed_name  = fixed_path.replace("\\", "/").split("/")[-1].split(".")[0] 
-        reg_moving_name = os.path.join(moving_path.replace("\\", "/").split("/")[0], moving_path.replace("\\", "/").split("/")[-1].split(".")[0])
-            
+        # reg_moving_name = os.path.join(moving_path.replace("\\", "/").split("/")[0], moving_path.replace("\\", "/").split("/")[-1].split(".")[0])
+        
+        # issue here with the files dir -> creates two dirs (output/labels/output_IBSR_11/..\IBSR_01_seg)
+        reg_moving_name = os.path.join(moving_path.replace("\\", "/").split("/")[-1].split(".")[0])
+
         # create an output directory for the labels
         output_dir = f'output/labels/output_{reg_fixed_name}/{reg_moving_name}' # rem _float64
 
