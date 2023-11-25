@@ -1,15 +1,16 @@
 import numpy as np
 
-
 def majority_voting_fusion(labels_dirs, load_nifti_callback):
     '''
-    This step is performed after the registration and label propagation to fuse all given labels to a single propabilistic atlas.
+    This step is performed after the registration and label propagation to fuse all given labels to a propabilistic atlas for each tissue.
 
     Args:
         labels_dirs ('list'): list of labels directories to be fused togather.
 
     Returns:
-        fused ('np.array'): A numpy array that holds the fused atlas.
+        mean_csf ('np.array'): A numpy array that holds the CSF fused atlas.
+        mean_gm ('np.array'): A numpy array that holds the GM fused atlas.
+        mean_wm ('np.array'): A numpy array that holds the WM fused atlas.
     '''
 
     # place holder for each tissue to create the atlas separately
