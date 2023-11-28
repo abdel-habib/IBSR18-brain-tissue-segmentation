@@ -1,8 +1,17 @@
 import numpy as np
+from typing import List, Callable
+from EM import NiftiManager, FileManager
+from .evaluate import mutual_information
 
-def majority_voting_fusion(labels_dirs, load_nifti_callback):
+NM = NiftiManager()
+FM = FileManager()
+
+def majority_voting_fusion(
+        labels_dirs: List[str] = [],
+        load_nifti_callback:Callable = None):
     '''
-    This step is performed after the registration and label propagation to fuse all given labels to a propabilistic atlas for each tissue.
+    Fuse all given labels to a propabilistic atlas for each tissue. This step is performed after 
+    the registration and label propagation.
 
     Args:
         labels_dirs ('list'): list of labels directories to be fused togather.
@@ -38,3 +47,80 @@ def majority_voting_fusion(labels_dirs, load_nifti_callback):
     mean_wm = np.mean(_WM, axis=0)
 
     return mean_csf, mean_gm, mean_wm
+
+
+def weighted_voting_fusion(
+        labels_dirs: List[str] = [],
+        intensity_dirs: List[str] = [],
+        target_intensity_path:str = None,
+        load_nifti_callback:Callable = None):
+    '''
+    Fuse all given labels based on their intensity volume similarity to the target volume.
+    This step is performed after the registration and label propagation.
+
+    The target_path is required to load the target volume and use it to calculate the 
+    similarity. The labels_dirs and intensity_dirs are required to load the labels and
+    the intensity volumes respectively for each of the moving images respectively, where
+    the label will be used to perform skull stripping on the intensity volume.
+
+    Args:
+        labels_dirs ('list'): list of labels directories to be fused togather.
+        intensity_dirs ('list'): list of intensity directories to be fused togather.
+        target_path ('str'): path to the target volume.
+        load_nifti_callback ('function'): a function that loads the nifti volume.
+
+    Returns:
+        mean_csf ('np.array'): A numpy array that holds the CSF fused atlas.
+        mean_gm ('np.array'): A numpy array that holds the GM fused atlas.
+        mean_wm ('np.array'): A numpy array that holds the WM fused atlas.
+    '''
+    # load the target volume
+    target_volume = load_nifti_callback(target_intensity_path)[0]
+
+    # mutual information for each intensity volume with the target volume
+    weights = {}
+    for intensity, label in zip(intensity_dirs, labels_dirs):
+        # load the volumes
+        nifti_volume = load_nifti_callback(intensity)[0]
+        nifti_label = load_nifti_callback(label)[0]
+        nifti_mask  = np.where(nifti_label == 0, 0, 1)
+
+        # skull strip the intensity volume
+        nifti_volume = np.multiply(nifti_volume, nifti_mask)
+
+        weights[intensity] = mutual_information(nifti_volume, target_volume)
+
+    # normalize weights to sum to 1
+    total_weight = sum(weights.values())
+    weights = {k: v / total_weight for k, v in weights.items()}
+
+    # weighted majority voting
+    _CSF = [] # 1
+    _GM  = [] # 2
+    _WM  = [] # 3
+
+    for intensity_path, weight in weights.items():
+        intensity_volume = load_nifti_callback(intensity_path)[0]
+        label_volume = load_nifti_callback(labels_dirs[intensity_dirs.index(intensity_path)])[0]
+
+        # Skull strip the intensity volume using the label
+        intensity_volume = np.multiply(intensity_volume, np.where(label_volume == 0, 0, 1))
+
+        # select each tissue by its label
+        nifti_volume_CSF = label_volume == 1
+        nifti_volume_GM  = label_volume == 2
+        nifti_volume_WM  = label_volume == 3
+
+        # group labels into their place holders
+        _CSF.append(weight * nifti_volume_CSF)
+        _GM.append(weight * nifti_volume_GM)
+        _WM.append(weight * nifti_volume_WM)
+
+    # get the mean of the three tissues
+    mean_csf = np.mean(_CSF, axis=0)
+    mean_gm = np.mean(_GM, axis=0)
+    mean_wm = np.mean(_WM, axis=0)
+
+    return mean_csf, mean_gm, mean_wm
+
+
