@@ -1,0 +1,14 @@
+{ 
+ "channel_names": {
+   "000": "T1"
+ }, 
+ "labels": {
+   "background": 0,
+   "CFS": 1,
+   "GM": 2,
+   "WM" : 3
+ }, 
+ "numTraining": 10, 
+ "file_ending": ".nii.gz",
+ "overwrite_image_reader_writer": "SimpleITKIO"
+}
