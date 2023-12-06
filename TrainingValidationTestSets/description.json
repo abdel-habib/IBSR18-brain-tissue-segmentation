@@ -1,44 +1,44 @@
 {
     "(0.9375, 1.5, 0.9375, 0.0)":{
         "train": [
-            "IBSR_01.nii.gz",
-            "IBSR_03.nii.gz",
-            "IBSR_04.nii.gz",
-            "IBSR_05.nii.gz",
-            "IBSR_06.nii.gz"
+            "IBSR_01",
+            "IBSR_03",
+            "IBSR_04",
+            "IBSR_05",
+            "IBSR_06"
         ],
         "valid": [
-            "IBSR_13.nii.gz",
-            "IBSR_14.nii.gz"
+            "IBSR_13",
+            "IBSR_14"
         ],
         "test": [
-            "IBSR_02.nii.gz"
+            "IBSR_02"
         ]
     },
     "(1.0, 1.5, 1.0, 0.0)": {
         "train": [
-            "IBSR_07.nii.gz",
-            "IBSR_08.nii.gz",
-            "IBSR_09.nii.gz"
+            "IBSR_07",
+            "IBSR_08",
+            "IBSR_09"
         ],
         "valid": [
-            "IBSR_11.nii.gz",
-            "IBSR_12.nii.gz"
+            "IBSR_11",
+            "IBSR_12"
         ],
         "test": [
-            "IBSR_10.nii.gz"
+            "IBSR_10"
         ]
     },
     "(0.8370536, 1.5, 0.8370536, 0.0)": {
         "train": [
-            "IBSR_16.nii.gz",
-            "IBSR_18.nii.gz"
+            "IBSR_16",
+            "IBSR_18"
         ],
         "valid": [
-            "IBSR_17.nii.gz"
+            "IBSR_17"
         ],
         "test": [
-            "IBSR_15.nii.gz"
+            "IBSR_15"
         ]
     }
 }
