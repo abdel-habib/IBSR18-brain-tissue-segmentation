@@ -2,6 +2,7 @@ import numpy as np
 from typing import List, Callable
 from EM import NiftiManager, FileManager
 from .evaluate import mutual_information
+import SimpleITK as sitk
 
 NM = NiftiManager()
 FM = FileManager()
@@ -123,4 +124,51 @@ def weighted_voting_fusion(
 
     return mean_csf, mean_gm, mean_wm
 
+def staple_fusion(        
+        labels_dirs: List[str] = [],
+        load_nifti_callback:Callable = None):
+    '''
+    Fuse all given labels based on the STAPLE algorithm. This step is performed after
+    the registration and label propagation.
+
+    Args:
+        labels_dirs ('list'): list of labels directories to be fused togather.
+        load_nifti_callback ('function'): a function that loads the nifti volume.
+
+    Returns:
+        mean_csf ('np.array'): A numpy array that holds the CSF fused atlas.
+        mean_gm ('np.array'): A numpy array that holds the GM fused atlas.
+        mean_wm ('np.array'): A numpy array that holds the WM fused atlas.
+    '''
+
+    # load the masks and conver them to SimpleITK format
+    masks_stack = []
+
+    for dir in labels_dirs:
+        # load the volumes
+        nifti_volume = load_nifti_callback(dir)[0]
+
+        masks_stack.append(sitk.GetImageFromArray(nifti_volume.astype(np.int16)))
+
+    # we have 3 labels for the 3 tissues, and STAPLE expects binary image as an input
+    num_labels = 3
+    consensus_results = []
+
+    # Run the STAPLE algorithm for each label
+    # The label index starts at 1, since the zero label is reserved for the background
+    for label_index in range(1, num_labels+1):
+        # Extract the binary mask for the current label
+        binary_masks = [sitk.BinaryThreshold(image, lowerThreshold=label_index, upperThreshold=label_index) for image in masks_stack]
+
+        # Run the STAPLE algorithm for the current label
+        staple_filter = sitk.STAPLE(binary_masks, 1.0)
+
+        # Append the result to the list of consensus results
+        consensus_results.append(staple_filter)
+
+    # convert back to numpy array
+    consensus_results = [ sitk.GetArrayFromImage(STAPLE_seg_sitk) for STAPLE_seg_sitk in consensus_results]
+
+    # return CSF, GM, WM based as they are labelled 1, 2, 3 respectively
+    return consensus_results[0], consensus_results[1], consensus_results[2]
 
