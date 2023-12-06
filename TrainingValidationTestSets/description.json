@@ -1,0 +1,44 @@
+{
+    "(0.9375, 1.5, 0.9375, 0.0)":{
+        "train": [
+            "IBSR_01.nii.gz",
+            "IBSR_03.nii.gz",
+            "IBSR_04.nii.gz",
+            "IBSR_05.nii.gz",
+            "IBSR_06.nii.gz"
+        ],
+        "valid": [
+            "IBSR_13.nii.gz",
+            "IBSR_14.nii.gz"
+        ],
+        "test": [
+            "IBSR_02.nii.gz"
+        ]
+    },
+    "(1.0, 1.5, 1.0, 0.0)": {
+        "train": [
+            "IBSR_07.nii.gz",
+            "IBSR_08.nii.gz",
+            "IBSR_09.nii.gz"
+        ],
+        "valid": [
+            "IBSR_11.nii.gz",
+            "IBSR_12.nii.gz"
+        ],
+        "test": [
+            "IBSR_10.nii.gz"
+        ]
+    },
+    "(0.8370536, 1.5, 0.8370536, 0.0)": {
+        "train": [
+            "IBSR_16.nii.gz",
+            "IBSR_18.nii.gz"
+        ],
+        "valid": [
+            "IBSR_17.nii.gz"
+        ],
+        "test": [
+            "IBSR_15.nii.gz"
+        ]
+    }
+}
