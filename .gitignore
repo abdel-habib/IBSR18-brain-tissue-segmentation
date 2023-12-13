@@ -1,5 +1,9 @@
 */output/*
 
+envW/
+multi-atlas-segmentation/output/
+multi-atlas-segmentation/output_base/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

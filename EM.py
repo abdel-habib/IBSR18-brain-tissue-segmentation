@@ -384,6 +384,10 @@ class Evaluate:
         Returns:
             dice_coefficients ('dict'): Dictionary of Dice coefficients for each tissue type.
         '''
+
+        if labels is None or not isinstance(labels, dict):
+            raise ValueError("The 'labels' parameter must be a dictionary mapping tissue types to labels.")
+
         # Ensure the masks have the same shape
         if volume1.shape != volume2.shape:
             raise ValueError("Input masks must have the same shape.")
