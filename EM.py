@@ -488,6 +488,7 @@ class ElastixTransformix:
         command_line = f'elastix -f "{fixed_path}" -m "{moving_path}" {reg_params} -out "{output_dir}"' if not fMask else \
                         f'elastix -f "{fixed_path}" -m "{moving_path}" -fMask {fMask} {reg_params} -out "{output_dir}"'
 
+        # print(command_line)
         # call elastix command
         excute_cmd_callback(command_line)
 
@@ -536,6 +537,7 @@ class ElastixTransformix:
         # create transformix command line
         command_line = f'transformix -in "{input_label}" -tp "{transform_path}"  -out "{output_dir}"'
         
+        # print(command_line)
         # run transformix on all combinations
         excute_cmd_callback(command_line)
     
