@@ -271,10 +271,56 @@ This line of code is used to train the nnUNet model:
 ```
 ! nnUNet_train 2d nnUNetTrainerV2_Fast Task975_BrainSegmentation 3 --npz -c 
 ```
+
 - To train - `nnUNet_train NETWORK NETWORK_TRAINER TASK_NAME_OR_ID FOLD --npz`
 - To resume - `nnUNet_train NETWORK NETWORK_TRAINER TASK_NAME_OR_ID FOLD --npz -c `(just add -c to the training command)
 - `NETWORK` - 2d, 3d_fullres, 3d_lowres, 3d_cascade_fullres
 - `nnUNetTrainerV2_Fast` - our custom trainer
-- 
+- `--npz` - if set then nnUNet will export npz files of predicted segmentations in the validation as well
 - Everything will be stored in the results folder
 
+After the trainning the predictions of each of the folds are save in the next route:
+
+```
+dl_part/nnUNet_results/nnUNet/2d/Task975_BrainSegmentation/nnUNetTrainerV2_Fast__nnUNetPlansv2.1/fold_3/
+├── debug.json
+├── model_best.model
+├── model_best.model.pkl
+├── model_final_checkpoint.model
+├── model_final_checkpoint.model.pkl
+├── network_architecture
+├── postprocessing.json
+├── progress.png
+├── training_log_2023_12_14_20_39_29.txt
+├── training_log_2023_12_14_21_34_59.txt
+├── training_log_2023_12_15_20_12_06.txt
+├── validation_raw
+│   ├── IBSR_05.nii.gz
+│   ├── IBSR_05.npz
+│   ├── IBSR_05.pkl
+│   ├── IBSR_10.nii.gz
+│   ├── IBSR_10.npz
+│   ├── IBSR_10.pkl
+│   ├── IBSR_14.nii.gz
+│   ├── IBSR_14.npz
+│   ├── IBSR_14.pkl
+│   ├── summary.json
+│   └── validation_args.json
+└── validation_raw_postprocessed
+    ├── IBSR_05.nii.gz
+    ├── IBSR_10.nii.gz
+    ├── IBSR_14.nii.gz
+    └── summary.json
+```
+
+In order to predict the testfiles correctly used the next command line: 
+
+```
+! nnUNet_predict -i nnUNet_raw/nnUNet_raw_data/Task975_BrainSegmentation/imagesTs -o task975_Results -t 975 -tr nnUNetTrainerV2_Fast -m 2d --num_threads_preprocessing 1
+
+```
+
+- To predict - `nnUNet_predict -i TEST_FOLDER -o OUTPUT_FOLDER -t TASK_NAME_OR_ID FOLD -tr NETWORK_TRAINER -m NETWORK --num_threads_preprocessing 1`
+
+- `NETWORK` - 2d, 3d_fullres, 3d_lowres, 3d_cascade_fullres
+- `nnUNetTrainerV2_Fast` - our custom trainer
