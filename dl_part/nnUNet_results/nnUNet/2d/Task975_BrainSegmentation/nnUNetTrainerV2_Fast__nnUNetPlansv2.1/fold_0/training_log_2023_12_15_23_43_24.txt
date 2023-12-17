@@ -1,0 +1,9 @@
+Starting... 
+2023-12-15 23:43:24.528591: Using splits from existing split file: /home/edalita/Documents/MAIA/3-Semestre/MIRMISAProject/IBSR18-tissue-segmentation/dl_part/nnUNet_preprocessed/Task975_BrainSegmentation/splits_final.pkl 
+2023-12-15 23:43:24.528856: The split file contains 5 splits. 
+2023-12-15 23:43:24.528906: Desired fold for training: 0 
+2023-12-15 23:43:24.528949: This split has 12 training and 3 validation cases. 
+2023-12-15 23:43:24.625612: TRAINING KEYS:
+ odict_keys(['IBSR_02', 'IBSR_03', 'IBSR_04', 'IBSR_05', 'IBSR_06', 'IBSR_07', 'IBSR_09', 'IBSR_10', 'IBSR_11', 'IBSR_13', 'IBSR_14', 'IBSR_15']) 
+2023-12-15 23:43:24.625743: VALIDATION KEYS:
+ odict_keys(['IBSR_01', 'IBSR_08', 'IBSR_12']) 
