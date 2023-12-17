@@ -239,7 +239,7 @@ After all the setting and dowloading all the necessary stuff to run the nnUNet. 
 
 The first step is to run the validation and model parameters setting.
 
- `-t`` parameter is the number of the task assing on the rawfolder were you save your data. For more information check the [official Documentation](https://github.com/MIC-DKFZ/nnUNet/blob/nnunetv1/documentation/dataset_conversion.md "Data Set Convertion NNunet")
+ `-t` parameter is the number of the task assing on the rawfolder were you save your data. For more information check the [official Documentation](https://github.com/MIC-DKFZ/nnUNet/blob/nnunetv1/documentation/dataset_conversion.md "Data Set Convertion NNunet")
 
 ```
 nnUNet_plan_and_preprocess -t 975 --verify_dataset_integrity
