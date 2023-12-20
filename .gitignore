@@ -1,5 +1,10 @@
 */output/*
 
+envW/
+multi-atlas-segmentation/output/
+multi-atlas-segmentation/output_base/
+multi-atlas-segmentation/output_modality/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -162,3 +167,7 @@ cython_debug/
 #.idea/
 
 projectMisaMira/
+
+*.model
+
+dl_part/nnUNet/

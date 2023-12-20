@@ -384,6 +384,10 @@ class Evaluate:
         Returns:
             dice_coefficients ('dict'): Dictionary of Dice coefficients for each tissue type.
         '''
+
+        if labels is None or not isinstance(labels, dict):
+            raise ValueError("The 'labels' parameter must be a dictionary mapping tissue types to labels.")
+
         # Ensure the masks have the same shape
         if volume1.shape != volume2.shape:
             raise ValueError("Input masks must have the same shape.")
@@ -484,6 +488,7 @@ class ElastixTransformix:
         command_line = f'elastix -f "{fixed_path}" -m "{moving_path}" {reg_params} -out "{output_dir}"' if not fMask else \
                         f'elastix -f "{fixed_path}" -m "{moving_path}" -fMask {fMask} {reg_params} -out "{output_dir}"'
 
+        # print(command_line)
         # call elastix command
         excute_cmd_callback(command_line)
 
@@ -532,6 +537,7 @@ class ElastixTransformix:
         # create transformix command line
         command_line = f'transformix -in "{input_label}" -tp "{transform_path}"  -out "{output_dir}"'
         
+        # print(command_line)
         # run transformix on all combinations
         excute_cmd_callback(command_line)
     
