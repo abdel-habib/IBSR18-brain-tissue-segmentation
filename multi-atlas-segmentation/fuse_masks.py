@@ -42,7 +42,7 @@ if __name__ == "__main__":
 
     # iterate through all fusion techniques
     for fusion_callback in [majority_voting_fusion, weighted_voting_fusion, staple_fusion]:
-        print(f'\Segmenting using "{fusion_callback.__name__}" fusion technique')
+        print(f'\nSegmenting using "{fusion_callback.__name__}" fusion technique')
 
         # iterate through all fixed directories
         for fixed_filename in fixed_dirs:
@@ -64,16 +64,23 @@ if __name__ == "__main__":
 
             # fuse method
             if fusion_callback.__name__ in ['majority_voting_fusion', 'staple_fusion']:
-                mean_csf, mean_gm, mean_wm = fusion_callback(
+                segmentation = fusion_callback(
                     labels_dirs = propagated_masks, 
-                    load_nifti_callback = NM.load_nifti)
+                    load_nifti_callback = NM.load_nifti).astype('float64')
                 
             elif fusion_callback.__name__ == 'weighted_voting_fusion':
-                mean_csf, mean_gm, mean_wm = fusion_callback(
+                segmentation = fusion_callback(
                     labels_dirs = propagated_masks, 
                     intensity_dirs = registered_intensity,
                     target_intensity_path = target_intensity_path,
-                    load_nifti_callback = NM.load_nifti)
+                    load_nifti_callback = NM.load_nifti).astype('float64')
+                
+            # save the segmentation result
+            args.segmentation_result_output = os.path.join(args.exp_output, "segmentation_results", fusion_callback.__name__)
+            FM.create_directory_if_not_exists(args.segmentation_result_output)
+
+            print(f"Saving segmentation result to {args.segmentation_result_output}")
+            NM.export_nifti(segmentation, os.path.join(args.segmentation_result_output, f"{fixed_filename}.nii.gz"), nii_image=target_nii_image)
 
             # check if generate_report is True
             if args.generate_report:
@@ -87,18 +94,8 @@ if __name__ == "__main__":
                 target_label_path = os.path.join(args.fixed_path, fixed_filename, f"{fixed_filename}_seg.nii.gz")
                 target_label_nifti = NM.load_nifti(target_label_path)[0][:,:,:,0]
 
-                # segment using the tissue atlases we created using the voting technique
-                segmentation_result, concatenated_atlas = BM.segment_using_tissue_atlas(target_intensity_nifti, target_label_nifti, mean_csf, mean_gm, mean_wm)
-
-                # save the segmentation result
-                # args.segmentation_result_output = os.path.join(args.exp_output, "segmentation_results", fusion_callback.__name__)
-                # FM.create_directory_if_not_exists(args.segmentation_result_output)
-
-                # print(f"Saving segmentation result to {args.segmentation_result_output}")
-                # print(target_nii_image.affine)
-
                 # evaluate dice score
-                dice_coefficients = EVAL.evaluate_dice_volumes(segmentation_result, target_label_nifti, labels={'BG':0, 'CSF':1, 'GM':2, 'WM':3})
+                dice_coefficients = EVAL.evaluate_dice_volumes(segmentation, target_label_nifti, labels={'BG':0, 'CSF':1, 'GM':2, 'WM':3})
 
                 print(f'Testing volume {fixed_filename}:-')
                 print(f' - Dice scores {dice_coefficients}')

@@ -23,31 +23,27 @@ def majority_voting_fusion(
         mean_wm ('np.array'): A numpy array that holds the WM fused atlas.
     '''
 
-    # place holder for each tissue to create the atlas separately
-    _CSF = [] # 1
-    _GM  = [] # 2
-    _WM  = [] # 3
+    # place holders for the segmented masks
+    segmentation_masks = []
     
     for dir in labels_dirs:
         # load the volumes
         nifti_volume = load_nifti_callback(dir)[0]
 
-        # select each tissue by its label
-        nifti_volume_CSF = nifti_volume == 1
-        nifti_volume_GM  = nifti_volume == 2
-        nifti_volume_WM  = nifti_volume == 3
-
         # group labels into their place holders
-        _CSF.append(nifti_volume_CSF)
-        _GM.append(nifti_volume_GM)
-        _WM.append(nifti_volume_WM)
+        segmentation_masks.append(nifti_volume)
 
-    # get the mean of the three tissues
-    mean_csf = np.mean(_CSF, axis=0)
-    mean_gm = np.mean(_GM, axis=0)
-    mean_wm = np.mean(_WM, axis=0)
+    # Convert segmentation masks to a 4D NumPy array (N x height x width x channels)
+    masks_array = np.stack(segmentation_masks, axis=0)
 
-    return mean_csf, mean_gm, mean_wm
+    # Convert the masks to integers
+    masks_array = masks_array.astype(np.int64)
+
+    # Use np.apply_along_axis to apply np.bincount to each pixel along the first axis
+    # This returns the bin (label) with the maximum count for each pixel
+    segmentation_result = np.apply_along_axis(lambda x: np.argmax(np.bincount(x)), axis=0, arr=masks_array)
+
+    return segmentation_result
 
 
 def weighted_voting_fusion(
@@ -96,6 +92,7 @@ def weighted_voting_fusion(
     weights = {k: v / total_weight for k, v in weights.items()}
 
     # weighted majority voting
+    _BG  = [] # 0
     _CSF = [] # 1
     _GM  = [] # 2
     _WM  = [] # 3
@@ -108,21 +105,32 @@ def weighted_voting_fusion(
         intensity_volume = np.multiply(intensity_volume, np.where(label_volume == 0, 0, 1))
 
         # select each tissue by its label
+        nifti_volume_BG  = label_volume == 0
         nifti_volume_CSF = label_volume == 1
         nifti_volume_GM  = label_volume == 2
         nifti_volume_WM  = label_volume == 3
 
         # group labels into their place holders
+        _BG.append(weight * nifti_volume_BG)
         _CSF.append(weight * nifti_volume_CSF)
         _GM.append(weight * nifti_volume_GM)
         _WM.append(weight * nifti_volume_WM)
 
     # get the mean of the three tissues
-    mean_csf = np.mean(_CSF, axis=0)
-    mean_gm = np.mean(_GM, axis=0)
-    mean_wm = np.mean(_WM, axis=0)
+    mean_bg  = np.mean(_BG, axis=0).flatten()
+    mean_csf = np.mean(_CSF, axis=0).flatten()
+    mean_gm = np.mean(_GM, axis=0).flatten()
+    mean_wm = np.mean(_WM, axis=0).flatten()
 
-    return mean_csf, mean_gm, mean_wm
+    # concatenate the flatenned atlases to form a NxK shaped array of arrays
+    concatenated_atlas = np.column_stack((mean_bg, mean_csf, mean_gm, mean_wm))
+
+    # get the argmax for each row to find which cluster does each sample refers to
+    atlases_argmax = np.argmax(concatenated_atlas, axis=1) # + 1
+    # reshape the argmax to the original shape of the volume
+    segmentation = atlases_argmax.reshape(target_volume.shape)[:, :, :, 0]
+
+    return segmentation
 
 def staple_fusion(        
         labels_dirs: List[str] = [],
@@ -155,20 +163,28 @@ def staple_fusion(
     consensus_results = []
 
     # Run the STAPLE algorithm for each label
-    # The label index starts at 1, since the zero label is reserved for the background
-    for label_index in range(1, num_labels+1):
+    for label_index in range(0, num_labels+1):
         # Extract the binary mask for the current label
         binary_masks = [sitk.BinaryThreshold(image, lowerThreshold=label_index, upperThreshold=label_index) for image in masks_stack]
 
         # Run the STAPLE algorithm for the current label
-        staple_filter = sitk.STAPLE(binary_masks, 1.0)
+        reference_segmentation_STAPLE_probabilities  = sitk.STAPLE(binary_masks, 1)
+
+        reference_segmentation_STAPLE  = reference_segmentation_STAPLE_probabilities > 0.60
 
         # Append the result to the list of consensus results
-        consensus_results.append(staple_filter)
+        consensus_results.append(reference_segmentation_STAPLE)
 
     # convert back to numpy array
     consensus_results = [ sitk.GetArrayFromImage(STAPLE_seg_sitk) for STAPLE_seg_sitk in consensus_results]
+    
+    # combined segmentation
+    segmentation = np.zeros_like(consensus_results[0])
 
-    # return CSF, GM, WM based as they are labelled 1, 2, 3 respectively
-    return consensus_results[0], consensus_results[1], consensus_results[2]
+    segmentation[consensus_results[0] == 1] = 0 # background
+    segmentation[consensus_results[1] == 1] = 1 # CSF
+    segmentation[consensus_results[2] == 1] = 2 # GM
+    segmentation[consensus_results[3] == 1] = 3 # WM
+
+    return segmentation
 
