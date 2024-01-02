@@ -170,4 +170,4 @@ projectMisaMira/
 
 *.model
 
-dl_part/nnUNet/
+dl_part/nnUNet/*
