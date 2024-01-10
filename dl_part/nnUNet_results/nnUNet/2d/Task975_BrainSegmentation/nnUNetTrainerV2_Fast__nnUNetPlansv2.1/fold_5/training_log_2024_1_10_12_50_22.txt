@@ -1,0 +1,421 @@
+Starting... 
+2024-01-10 12:50:22.524481: Using splits from existing split file: /home/edalita/Documents/MAIA/3-Semestre/MIRMISAProject/IBSR18-tissue-segmentation/dl_part/nnUNet_preprocessed/Task975_BrainSegmentation/splits_final.pkl 
+2024-01-10 12:50:22.524835: The split file contains 5 splits. 
+2024-01-10 12:50:22.524916: Desired fold for training: 5 
+2024-01-10 12:50:22.524989: INFO: You requested fold 5 for training but splits contain only 5 folds. I am now creating a random (but seeded) 80:20 split! 
+2024-01-10 12:50:22.525759: This random 80:20 split has 12 training and 3 validation cases. 
+2024-01-10 12:50:22.633896: TRAINING KEYS:
+ odict_keys(['IBSR_01', 'IBSR_04', 'IBSR_05', 'IBSR_06', 'IBSR_08', 'IBSR_09', 'IBSR_10', 'IBSR_11', 'IBSR_12', 'IBSR_13', 'IBSR_14', 'IBSR_15']) 
+2024-01-10 12:50:22.634123: VALIDATION KEYS:
+ odict_keys(['IBSR_02', 'IBSR_03', 'IBSR_07']) 
+2024-01-10 12:50:23.518598: loading checkpoint /home/edalita/Documents/MAIA/3-Semestre/MIRMISAProject/IBSR18-tissue-segmentation/dl_part/nnUNet_results/nnUNet/2d/Task975_BrainSegmentation/nnUNetTrainerV2_Fast__nnUNetPlansv2.1/fold_5/model_final_checkpoint.model train= True 
+2024-01-10 12:50:24.053283: lr: 0.004384 
+2024-01-10 12:50:36.320684: Unable to plot network architecture: 
+2024-01-10 12:50:36.321597: failed to execute ['dot', '-Tpdf', '-O', '/home/edalita/Documents/MAIA/3-Semestre/MIRMISAProject/IBSR18-tissue-segmentation/dl_part/nnUNet_results/nnUNet/2d/Task975_BrainSegmentation/nnUNetTrainerV2_Fast__nnUNetPlansv2.1/fold_5/network_architecture'], make sure the Graphviz executables are on your systems' PATH 
+2024-01-10 12:50:36.322425: 
+printing the network instead:
+ 
+2024-01-10 12:50:36.323200: Generic_UNet(
+  (conv_blocks_localization): ModuleList(
+    (0): Sequential(
+      (0): StackedConvLayers(
+        (blocks): Sequential(
+          (0): ConvDropoutNormNonlin(
+            (conv): Conv2d(960, 480, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+            (instnorm): InstanceNorm2d(480, eps=1e-05, momentum=0.1, affine=True, track_running_stats=False)
+            (lrelu): LeakyReLU(negative_slope=0.01, inplace=True)
+          )
+        )
+      )
+      (1): StackedConvLayers(
+        (blocks): Sequential(
+          (0): ConvDropoutNormNonlin(
+            (conv): Conv2d(480, 480, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+            (instnorm): InstanceNorm2d(480, eps=1e-05, momentum=0.1, affine=True, track_running_stats=False)
+            (lrelu): LeakyReLU(negative_slope=0.01, inplace=True)
+          )
+        )
+      )
+    )
+    (1): Sequential(
+      (0): StackedConvLayers(
+        (blocks): Sequential(
+          (0): ConvDropoutNormNonlin(
+            (conv): Conv2d(512, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+            (instnorm): InstanceNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=False)
+            (lrelu): LeakyReLU(negative_slope=0.01, inplace=True)
+          )
+        )
+      )
+      (1): StackedConvLayers(
+        (blocks): Sequential(
+          (0): ConvDropoutNormNonlin(
+            (conv): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+            (instnorm): InstanceNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=False)
+            (lrelu): LeakyReLU(negative_slope=0.01, inplace=True)
+          )
+        )
+      )
+    )
+    (2): Sequential(
+      (0): StackedConvLayers(
+        (blocks): Sequential(
+          (0): ConvDropoutNormNonlin(
+            (conv): Conv2d(256, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+            (instnorm): InstanceNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=False)
+            (lrelu): LeakyReLU(negative_slope=0.01, inplace=True)
+          )
+        )
+      )
+      (1): StackedConvLayers(
+        (blocks): Sequential(
+          (0): ConvDropoutNormNonlin(
+            (conv): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+            (instnorm): InstanceNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=False)
+            (lrelu): LeakyReLU(negative_slope=0.01, inplace=True)
+          )
+        )
+      )
+    )
+    (3): Sequential(
+      (0): StackedConvLayers(
+        (blocks): Sequential(
+          (0): ConvDropoutNormNonlin(
+            (conv): Conv2d(128, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+            (instnorm): InstanceNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=False)
+            (lrelu): LeakyReLU(negative_slope=0.01, inplace=True)
+          )
+        )
+      )
+      (1): StackedConvLayers(
+        (blocks): Sequential(
+          (0): ConvDropoutNormNonlin(
+            (conv): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+            (instnorm): InstanceNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=False)
+            (lrelu): LeakyReLU(negative_slope=0.01, inplace=True)
+          )
+        )
+      )
+    )
+    (4): Sequential(
+      (0): StackedConvLayers(
+        (blocks): Sequential(
+          (0): ConvDropoutNormNonlin(
+            (conv): Conv2d(64, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+            (instnorm): InstanceNorm2d(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=False)
+            (lrelu): LeakyReLU(negative_slope=0.01, inplace=True)
+          )
+        )
+      )
+      (1): StackedConvLayers(
+        (blocks): Sequential(
+          (0): ConvDropoutNormNonlin(
+            (conv): Conv2d(32, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+            (instnorm): InstanceNorm2d(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=False)
+            (lrelu): LeakyReLU(negative_slope=0.01, inplace=True)
+          )
+        )
+      )
+    )
+  )
+  (conv_blocks_context): ModuleList(
+    (0): StackedConvLayers(
+      (blocks): Sequential(
+        (0): ConvDropoutNormNonlin(
+          (conv): Conv2d(1, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+          (instnorm): InstanceNorm2d(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=False)
+          (lrelu): LeakyReLU(negative_slope=0.01, inplace=True)
+        )
+        (1): ConvDropoutNormNonlin(
+          (conv): Conv2d(32, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+          (instnorm): InstanceNorm2d(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=False)
+          (lrelu): LeakyReLU(negative_slope=0.01, inplace=True)
+        )
+      )
+    )
+    (1): StackedConvLayers(
+      (blocks): Sequential(
+        (0): ConvDropoutNormNonlin(
+          (conv): Conv2d(32, 64, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1))
+          (instnorm): InstanceNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=False)
+          (lrelu): LeakyReLU(negative_slope=0.01, inplace=True)
+        )
+        (1): ConvDropoutNormNonlin(
+          (conv): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+          (instnorm): InstanceNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=False)
+          (lrelu): LeakyReLU(negative_slope=0.01, inplace=True)
+        )
+      )
+    )
+    (2): StackedConvLayers(
+      (blocks): Sequential(
+        (0): ConvDropoutNormNonlin(
+          (conv): Conv2d(64, 128, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1))
+          (instnorm): InstanceNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=False)
+          (lrelu): LeakyReLU(negative_slope=0.01, inplace=True)
+        )
+        (1): ConvDropoutNormNonlin(
+          (conv): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+          (instnorm): InstanceNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=False)
+          (lrelu): LeakyReLU(negative_slope=0.01, inplace=True)
+        )
+      )
+    )
+    (3): StackedConvLayers(
+      (blocks): Sequential(
+        (0): ConvDropoutNormNonlin(
+          (conv): Conv2d(128, 256, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1))
+          (instnorm): InstanceNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=False)
+          (lrelu): LeakyReLU(negative_slope=0.01, inplace=True)
+        )
+        (1): ConvDropoutNormNonlin(
+          (conv): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+          (instnorm): InstanceNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=False)
+          (lrelu): LeakyReLU(negative_slope=0.01, inplace=True)
+        )
+      )
+    )
+    (4): StackedConvLayers(
+      (blocks): Sequential(
+        (0): ConvDropoutNormNonlin(
+          (conv): Conv2d(256, 480, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1))
+          (instnorm): InstanceNorm2d(480, eps=1e-05, momentum=0.1, affine=True, track_running_stats=False)
+          (lrelu): LeakyReLU(negative_slope=0.01, inplace=True)
+        )
+        (1): ConvDropoutNormNonlin(
+          (conv): Conv2d(480, 480, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+          (instnorm): InstanceNorm2d(480, eps=1e-05, momentum=0.1, affine=True, track_running_stats=False)
+          (lrelu): LeakyReLU(negative_slope=0.01, inplace=True)
+        )
+      )
+    )
+    (5): Sequential(
+      (0): StackedConvLayers(
+        (blocks): Sequential(
+          (0): ConvDropoutNormNonlin(
+            (conv): Conv2d(480, 480, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1))
+            (instnorm): InstanceNorm2d(480, eps=1e-05, momentum=0.1, affine=True, track_running_stats=False)
+            (lrelu): LeakyReLU(negative_slope=0.01, inplace=True)
+          )
+        )
+      )
+      (1): StackedConvLayers(
+        (blocks): Sequential(
+          (0): ConvDropoutNormNonlin(
+            (conv): Conv2d(480, 480, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+            (instnorm): InstanceNorm2d(480, eps=1e-05, momentum=0.1, affine=True, track_running_stats=False)
+            (lrelu): LeakyReLU(negative_slope=0.01, inplace=True)
+          )
+        )
+      )
+    )
+  )
+  (td): ModuleList()
+  (tu): ModuleList(
+    (0): ConvTranspose2d(480, 480, kernel_size=(2, 2), stride=(2, 2), bias=False)
+    (1): ConvTranspose2d(480, 256, kernel_size=(2, 2), stride=(2, 2), bias=False)
+    (2): ConvTranspose2d(256, 128, kernel_size=(2, 2), stride=(2, 2), bias=False)
+    (3): ConvTranspose2d(128, 64, kernel_size=(2, 2), stride=(2, 2), bias=False)
+    (4): ConvTranspose2d(64, 32, kernel_size=(2, 2), stride=(2, 2), bias=False)
+  )
+  (seg_outputs): ModuleList(
+    (0): Conv2d(480, 4, kernel_size=(1, 1), stride=(1, 1), bias=False)
+    (1): Conv2d(256, 4, kernel_size=(1, 1), stride=(1, 1), bias=False)
+    (2): Conv2d(128, 4, kernel_size=(1, 1), stride=(1, 1), bias=False)
+    (3): Conv2d(64, 4, kernel_size=(1, 1), stride=(1, 1), bias=False)
+    (4): Conv2d(32, 4, kernel_size=(1, 1), stride=(1, 1), bias=False)
+  )
+) 
+2024-01-10 12:50:36.335819: 
+ 
+2024-01-10 12:50:36.339733: 
+epoch:  30 
+2024-01-10 12:59:39.358258: train loss : -0.8701 
+2024-01-10 13:00:13.357246: validation loss: -0.8393 
+2024-01-10 13:00:13.357806: Average global foreground Dice: [0.8909, 0.9461, 0.9317] 
+2024-01-10 13:00:13.357962: (interpret this as an estimate for the Dice of the different classes. This is not exact.) 
+2024-01-10 13:00:13.976527: lr: 0.004186 
+2024-01-10 13:00:14.028457: saving checkpoint... 
+2024-01-10 13:00:14.667934: done, saving took 0.69 seconds 
+2024-01-10 13:00:14.668929: This epoch took 578.328880 s
+ 
+2024-01-10 13:00:14.669020: 
+epoch:  31 
+2024-01-10 13:08:12.210872: train loss : -0.8703 
+2024-01-10 13:08:46.018298: validation loss: -0.8349 
+2024-01-10 13:08:46.018843: Average global foreground Dice: [0.8867, 0.9451, 0.9282] 
+2024-01-10 13:08:46.019104: (interpret this as an estimate for the Dice of the different classes. This is not exact.) 
+2024-01-10 13:08:46.780312: lr: 0.003987 
+2024-01-10 13:08:46.780519: This epoch took 512.111403 s
+ 
+2024-01-10 13:08:46.780613: 
+epoch:  32 
+2024-01-10 13:16:44.878268: train loss : -0.8719 
+2024-01-10 13:17:18.841255: validation loss: -0.8363 
+2024-01-10 13:17:18.841779: Average global foreground Dice: [0.8865, 0.9455, 0.9304] 
+2024-01-10 13:17:18.841927: (interpret this as an estimate for the Dice of the different classes. This is not exact.) 
+2024-01-10 13:17:19.527890: lr: 0.003787 
+2024-01-10 13:17:19.528079: This epoch took 512.747375 s
+ 
+2024-01-10 13:17:19.528185: 
+epoch:  33 
+2024-01-10 13:25:16.459944: train loss : -0.8726 
+2024-01-10 13:25:50.361758: validation loss: -0.8374 
+2024-01-10 13:25:50.362376: Average global foreground Dice: [0.8906, 0.9456, 0.9307] 
+2024-01-10 13:25:50.362523: (interpret this as an estimate for the Dice of the different classes. This is not exact.) 
+2024-01-10 13:25:51.121708: lr: 0.003586 
+2024-01-10 13:25:51.121947: This epoch took 511.593669 s
+ 
+2024-01-10 13:25:51.122115: 
+epoch:  34 
+2024-01-10 13:33:48.730563: train loss : -0.8733 
+2024-01-10 13:34:22.582806: validation loss: -0.8397 
+2024-01-10 13:34:22.583331: Average global foreground Dice: [0.8874, 0.9464, 0.932] 
+2024-01-10 13:34:22.583464: (interpret this as an estimate for the Dice of the different classes. This is not exact.) 
+2024-01-10 13:34:23.306557: lr: 0.003384 
+2024-01-10 13:34:23.306782: This epoch took 512.184564 s
+ 
+2024-01-10 13:34:23.306879: 
+epoch:  35 
+2024-01-10 13:42:21.697022: train loss : -0.8732 
+2024-01-10 13:42:55.688381: validation loss: -0.8393 
+2024-01-10 13:42:55.688923: Average global foreground Dice: [0.8902, 0.9458, 0.9308] 
+2024-01-10 13:42:55.689036: (interpret this as an estimate for the Dice of the different classes. This is not exact.) 
+2024-01-10 13:42:56.442658: lr: 0.00318 
+2024-01-10 13:42:56.442862: This epoch took 513.135892 s
+ 
+2024-01-10 13:42:56.442961: 
+epoch:  36 
+2024-01-10 13:50:54.324734: train loss : -0.8740 
+2024-01-10 13:51:28.320004: validation loss: -0.8374 
+2024-01-10 13:51:28.320504: Average global foreground Dice: [0.8894, 0.945, 0.9284] 
+2024-01-10 13:51:28.320612: (interpret this as an estimate for the Dice of the different classes. This is not exact.) 
+2024-01-10 13:51:29.221312: lr: 0.002975 
+2024-01-10 13:51:29.221526: This epoch took 512.778425 s
+ 
+2024-01-10 13:51:29.221629: 
+epoch:  37 
+2024-01-10 13:59:27.085470: train loss : -0.8751 
+2024-01-10 14:00:00.991412: validation loss: -0.8367 
+2024-01-10 14:00:00.992004: Average global foreground Dice: [0.8875, 0.9456, 0.9307] 
+2024-01-10 14:00:00.992134: (interpret this as an estimate for the Dice of the different classes. This is not exact.) 
+2024-01-10 14:00:01.742537: lr: 0.002768 
+2024-01-10 14:00:01.742760: This epoch took 512.521031 s
+ 
+2024-01-10 14:00:01.742862: 
+epoch:  38 
+2024-01-10 14:07:59.873781: train loss : -0.8760 
+2024-01-10 14:08:33.787523: validation loss: -0.8380 
+2024-01-10 14:08:33.788084: Average global foreground Dice: [0.8931, 0.945, 0.9297] 
+2024-01-10 14:08:33.788235: (interpret this as an estimate for the Dice of the different classes. This is not exact.) 
+2024-01-10 14:08:34.546865: lr: 0.00256 
+2024-01-10 14:08:34.547126: This epoch took 512.804166 s
+ 
+2024-01-10 14:08:34.547265: 
+epoch:  39 
+2024-01-10 14:16:32.417524: train loss : -0.8758 
+2024-01-10 14:17:06.248107: validation loss: -0.8362 
+2024-01-10 14:17:06.248744: Average global foreground Dice: [0.8826, 0.9468, 0.9316] 
+2024-01-10 14:17:06.248896: (interpret this as an estimate for the Dice of the different classes. This is not exact.) 
+2024-01-10 14:17:07.012912: lr: 0.002349 
+2024-01-10 14:17:07.013170: This epoch took 512.465765 s
+ 
+2024-01-10 14:17:07.013300: 
+epoch:  40 
+2024-01-10 14:25:04.372859: train loss : -0.8773 
+2024-01-10 14:25:38.384941: validation loss: -0.8384 
+2024-01-10 14:25:38.385498: Average global foreground Dice: [0.8876, 0.9467, 0.9316] 
+2024-01-10 14:25:38.385843: (interpret this as an estimate for the Dice of the different classes. This is not exact.) 
+2024-01-10 14:25:39.132439: lr: 0.002137 
+2024-01-10 14:25:39.132638: This epoch took 512.119212 s
+ 
+2024-01-10 14:25:39.132732: 
+epoch:  41 
+2024-01-10 14:33:37.068175: train loss : -0.8772 
+2024-01-10 14:34:11.106615: validation loss: -0.8372 
+2024-01-10 14:34:11.107112: Average global foreground Dice: [0.8865, 0.9462, 0.9312] 
+2024-01-10 14:34:11.107214: (interpret this as an estimate for the Dice of the different classes. This is not exact.) 
+2024-01-10 14:34:11.774975: lr: 0.001922 
+2024-01-10 14:34:11.775153: This epoch took 512.642332 s
+ 
+2024-01-10 14:34:11.775246: 
+epoch:  42 
+2024-01-10 14:42:09.847086: train loss : -0.8773 
+2024-01-10 14:42:43.737361: validation loss: -0.8393 
+2024-01-10 14:42:43.737873: Average global foreground Dice: [0.8898, 0.9462, 0.9314] 
+2024-01-10 14:42:43.737983: (interpret this as an estimate for the Dice of the different classes. This is not exact.) 
+2024-01-10 14:42:44.407969: lr: 0.001704 
+2024-01-10 14:42:44.408157: This epoch took 512.632829 s
+ 
+2024-01-10 14:42:44.408244: 
+epoch:  43 
+2024-01-10 14:50:41.609997: train loss : -0.8783 
+2024-01-10 14:51:15.488281: validation loss: -0.8389 
+2024-01-10 14:51:15.488911: Average global foreground Dice: [0.8894, 0.9462, 0.9314] 
+2024-01-10 14:51:15.489059: (interpret this as an estimate for the Dice of the different classes. This is not exact.) 
+2024-01-10 14:51:16.259075: lr: 0.001483 
+2024-01-10 14:51:16.259267: This epoch took 511.850938 s
+ 
+2024-01-10 14:51:16.259357: 
+epoch:  44 
+2024-01-10 14:59:13.716408: train loss : -0.8790 
+2024-01-10 14:59:47.609102: validation loss: -0.8370 
+2024-01-10 14:59:47.609812: Average global foreground Dice: [0.8877, 0.9461, 0.9306] 
+2024-01-10 14:59:47.609948: (interpret this as an estimate for the Dice of the different classes. This is not exact.) 
+2024-01-10 14:59:48.319244: lr: 0.001259 
+2024-01-10 14:59:48.319485: This epoch took 512.060040 s
+ 
+2024-01-10 14:59:48.319621: 
+epoch:  45 
+2024-01-10 15:07:45.360232: train loss : -0.8786 
+2024-01-10 15:08:19.288021: validation loss: -0.8401 
+2024-01-10 15:08:19.288520: Average global foreground Dice: [0.8879, 0.9465, 0.932] 
+2024-01-10 15:08:19.288626: (interpret this as an estimate for the Dice of the different classes. This is not exact.) 
+2024-01-10 15:08:20.108176: lr: 0.00103 
+2024-01-10 15:08:20.108367: This epoch took 511.788632 s
+ 
+2024-01-10 15:08:20.108457: 
+epoch:  46 
+2024-01-10 15:16:18.417526: train loss : -0.8789 
+2024-01-10 15:16:52.340063: validation loss: -0.8388 
+2024-01-10 15:16:52.340625: Average global foreground Dice: [0.8868, 0.9471, 0.9319] 
+2024-01-10 15:16:52.340745: (interpret this as an estimate for the Dice of the different classes. This is not exact.) 
+2024-01-10 15:16:53.148044: lr: 0.000795 
+2024-01-10 15:16:53.148322: This epoch took 513.039778 s
+ 
+2024-01-10 15:16:53.148473: 
+epoch:  47 
+2024-01-10 15:24:50.698984: train loss : -0.8793 
+2024-01-10 15:25:24.535275: validation loss: -0.8406 
+2024-01-10 15:25:24.535886: Average global foreground Dice: [0.8923, 0.9463, 0.931] 
+2024-01-10 15:25:24.536006: (interpret this as an estimate for the Dice of the different classes. This is not exact.) 
+2024-01-10 15:25:25.271127: lr: 0.000552 
+2024-01-10 15:25:25.271475: This epoch took 512.122859 s
+ 
+2024-01-10 15:25:25.271591: 
+epoch:  48 
+2024-01-10 15:33:22.510223: train loss : -0.8801 
+2024-01-10 15:33:56.428289: validation loss: -0.8370 
+2024-01-10 15:33:56.428890: Average global foreground Dice: [0.8845, 0.9466, 0.9314] 
+2024-01-10 15:33:56.429003: (interpret this as an estimate for the Dice of the different classes. This is not exact.) 
+2024-01-10 15:33:57.099076: lr: 0.000296 
+2024-01-10 15:33:57.099272: This epoch took 511.827584 s
+ 
+2024-01-10 15:33:57.099365: 
+epoch:  49 
+2024-01-10 15:41:54.247199: train loss : -0.8799 
+2024-01-10 15:42:28.155740: validation loss: -0.8412 
+2024-01-10 15:42:28.156359: Average global foreground Dice: [0.8917, 0.9472, 0.932] 
+2024-01-10 15:42:28.156477: (interpret this as an estimate for the Dice of the different classes. This is not exact.) 
+2024-01-10 15:42:28.879334: lr: 0.0 
+2024-01-10 15:42:28.879522: saving scheduled checkpoint file... 
+2024-01-10 15:42:28.910832: saving checkpoint... 
+2024-01-10 15:42:29.169065: done, saving took 0.29 seconds 
+2024-01-10 15:42:29.170056: done 
+2024-01-10 15:42:29.170221: This epoch took 512.070488 s
+ 
+2024-01-10 15:42:29.189273: saving checkpoint... 
+2024-01-10 15:42:29.813385: done, saving took 0.64 seconds 
+2024-01-10 15:42:55.641842: finished prediction 
+2024-01-10 15:42:55.642265: evaluation of raw predictions 
+2024-01-10 15:42:56.873083: determining postprocessing 
