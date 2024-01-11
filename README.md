@@ -45,103 +45,108 @@ The evaluation is only possible when the test labels are given, the segmentation
 
 Deep Learning Segmentation using nnUNet 
 ============
+The code refering on this part can be founs in the [unnet_segmentation.ipynb](dl_part/unnet_segmentation.ipynb)
 
-In the nnUNet part the dataset was rename it in oder to follow the instruction of the nnUNet [github page](https://github.com/MIC-DKFZ/nnUNet/blob/nnunetv1/documentation/dataset_conversion.md "Data Set Convertion NNunet"). So our data set pass from this: 
+In the nnUNet part the dataset was rename it in oder to follow the instruction of the nnUNet [github page](https://github.com/MIC-DKFZ/nnUNet/blob/nnunetv1/documentation/dataset_conversion.md "Data Set Convertion NNunet").
 
+We create this function to apply the changes from the UNNet Documentation.
+
+```python
+convert_data_structure('../TrainingValidationTestSets/','nnUNet_raw/nnUNet_raw_data/')
 ```
 
+<table>
+    <tr>
+        <th>Original</th>
+        <th>NNunet</th>
+    </tr>
+    <tr>
+        <td>
+            <pre>
 TrainingValidationTestSets
 ├── description.json
 ├── Test_Set
-│   ├── IBSR_02
-│   │   └── IBSR_02.nii.gz
-│   ├── IBSR_10
-│   │   └── IBSR_10.nii.gz
-│   └── IBSR_15
-│       └── IBSR_15.nii.gz
+│   ├── IBSR_02
+│   │   └── IBSR_02.nii.gz
+│   ├── IBSR_10
+│   │   └── IBSR_10.nii.gz
+│   └── IBSR_15
+│       └── IBSR_15.nii.gz
 ├── Training_Set
-│   ├── IBSR_01
-│   │   ├── IBSR_01.nii.gz
-│   │   └── IBSR_01_seg.nii.gz
-│   ├── IBSR_03
-│   │   ├── IBSR_03.nii.gz
-│   │   └── IBSR_03_seg.nii.gz
-│   ├── IBSR_04
-│   │   ├── IBSR_04.nii.gz
-│   │   └── IBSR_04_seg.nii.gz
-│   ├── IBSR_05
-│   │   ├── IBSR_05.nii.gz
-│   │   └── IBSR_05_seg.nii.gz
-│   ├── IBSR_06
-│   │   ├── IBSR_06.nii.gz
-│   │   └── IBSR_06_seg.nii.gz
-│   ├── IBSR_07
-│   │   ├── IBSR_07.nii.gz
-│   │   └── IBSR_07_seg.nii.gz
-│   ├── IBSR_08
-│   │   ├── IBSR_08.nii.gz
-│   │   └── IBSR_08_seg.nii.gz
-│   ├── IBSR_09
-│   │   ├── IBSR_09.nii.gz
-│   │   └── IBSR_09_seg.nii.gz
-│   ├── IBSR_16
-│   │   ├── IBSR_16.nii.gz
-│   │   └── IBSR_16_seg.nii.gz
-│   └── IBSR_18
-│       ├── IBSR_18.nii.gz
-│       └── IBSR_18_seg.nii.gz
+│   ├── IBSR_01
+│   │   ├── IBSR_01.nii.gz
+│   │   └── IBSR_01_seg.nii.gz
+│   ├── IBSR_03
+│   │   ├── IBSR_03.nii.gz
+│   │   └── IBSR_03_seg.nii.gz
+│   ├── IBSR_04
+│   │   ├── IBSR_04.nii.gz
+│   │   └── IBSR_04_seg.nii.gz
+│   ├── IBSR_05
+│   │   ├── IBSR_05.nii.gz
+│   │   └── IBSR_05_seg.nii.gz
+│   ├── IBSR_06
+│   │   ├── IBSR_06.nii.gz
+│   │   └── IBSR_06_seg.nii.gz
+│   ├── IBSR_07
+│   │   ├── IBSR_07.nii.gz
+│   │   └── IBSR_07_seg.nii.gz
+│   ├── IBSR_08
+│   │   ├── IBSR_08.nii.gz
+│   │   └── IBSR_08_seg.nii.gz
+│   ├── IBSR_09
+│   │   ├── IBSR_09.nii.gz
+│   │   └── IBSR_09_seg.nii.gz
+│   ├── IBSR_16
+│   │   ├── IBSR_16.nii.gz
+│   │   └── IBSR_16_seg.nii.gz
+│   └── IBSR_18
+│       ├── IBSR_18.nii.gz
+│       └── IBSR_18_seg.nii.gz
 └── Validation_Set
     ├── IBSR_11
-    │   ├── IBSR_11.nii.gz
-    │   └── IBSR_11_seg.nii.gz
+    │   ├── IBSR_11.nii.gz
+    │   └── IBSR_11_seg.nii.gz
     ├── IBSR_12
-    │   ├── IBSR_12.nii.gz
-    │   └── IBSR_12_seg.nii.gz
+    │   ├── IBSR_12.nii.gz
+    │   └── IBSR_12_seg.nii.gz
     ├── IBSR_13
-    │   ├── IBSR_13.nii.gz
-    │   └── IBSR_13_seg.nii.gz
+    │   ├── IBSR_13.nii.gz
+    │   └── IBSR_13_seg.nii.gz
     ├── IBSR_14
-    │   ├── IBSR_14.nii.gz
-    │   └── IBSR_14_seg.nii.gz
+    │   ├── IBSR_14.nii.gz
+    │   └── IBSR_14_seg.nii.gz
     └── IBSR_17
         ├── IBSR_17.nii.gz
         └── IBSR_17_seg.nii.gz
-```
-
-The changes apply to the above data structure are as follow:
- - Since the nnUNet model makes the automatic split of the trainning set into trainning and validation.
- - Continuos numeration, this cahnge was made from IBSR_16 to IBSR_10 so on since the model requiere a sequencial numeration of the sets. In the test set, follow the same numeration wich means that IBSR_02 to IBSR_16
-
-With this changes the new dataset looks like this: 
-
-```
-
+            </pre>
+        </td>
+        <td>
+            <pre>
 dl_part/nnUNet_raw/nnUNet_raw_data
-└── Task975_BrainSegmentation
-    ├── dataset.json
+└──Task975_BrainSegmentation
     ├── imagesTr
-    │   ├── IBSR_01_0000.nii.gz
-    │   ├── IBSR_02_0000.nii.gz
-    │   ├── IBSR_03_0000.nii.gz
-    │   ├── IBSR_04_0000.nii.gz
-    │   ├── IBSR_05_0000.nii.gz
-    │   ├── IBSR_06_0000.nii.gz
-    │   ├── IBSR_07_0000.nii.gz
-    │   ├── IBSR_08_0000.nii.gz
-    │   ├── IBSR_09_0000.nii.gz
-    │   ├── IBSR_10_0000.nii.gz
-    │   ├── IBSR_11_0000.nii.gz
-    │   ├── IBSR_12_0000.nii.gz
-    │   ├── IBSR_13_0000.nii.gz
-    │   ├── IBSR_14_0000.nii.gz
-    │   └── IBSR_15_0000.nii.gz
+    │   ├── IBSR_01_0000.nii.gz
+    │   ├── IBSR_03_0000.nii.gz
+    │   ├── IBSR_04_0000.nii.gz
+    │   ├── IBSR_05_0000.nii.gz
+    │   ├── IBSR_06_0000.nii.gz
+    │   ├── IBSR_07_0000.nii.gz
+    │   ├── IBSR_08_0000.nii.gz
+    │   ├── IBSR_09_0000.nii.gz
+    │   ├── IBSR_11_0000.nii.gz
+    │   ├── IBSR_12_0000.nii.gz
+    │   ├── IBSR_13_0000.nii.gz
+    │   ├── IBSR_14_0000.nii.gz
+    │   ├── IBSR_16_0000.nii.gz
+    │   ├── IBSR_17_0000.nii.gz
+    │   └── IBSR_18_0000.nii.gz
     ├── imagesTs
-    │   ├── IBSR_16_0000.nii.gz
-    │   ├── IBSR_17_0000.nii.gz
-    │   └── IBSR_18_0000.nii.gz
+    │   ├── IBSR_02_0000.nii.gz
+    │   ├── IBSR_10_0000.nii.gz
+    │   └── IBSR_15_0000.nii.gz
     └── labelsTr
         ├── IBSR_01.nii.gz
-        ├── IBSR_02.nii.gz
         ├── IBSR_03.nii.gz
         ├── IBSR_04.nii.gz
         ├── IBSR_05.nii.gz
@@ -149,16 +154,26 @@ dl_part/nnUNet_raw/nnUNet_raw_data
         ├── IBSR_07.nii.gz
         ├── IBSR_08.nii.gz
         ├── IBSR_09.nii.gz
-        ├── IBSR_10.nii.gz
         ├── IBSR_11.nii.gz
         ├── IBSR_12.nii.gz
         ├── IBSR_13.nii.gz
         ├── IBSR_14.nii.gz
-        └── IBSR_15.nii.gz
+        ├── IBSR_16.nii.gz
+        ├── IBSR_17.nii.gz
+        └── IBSR_18.nii.gz
+            </pre>
+        </td>
+    </tr>
+</table>
 
+
+
+Create the .json file describing the dataset structure with the next command:
+
+```python
+create_dataset_json('nnUNet_raw/nnUNet_raw_data/Task975_BrainSegmentation/', "nnUNet_raw/nnUNet_raw_data/Task975_BrainSegmentation/dataset.json")
 ```
 
-The code refering on this part can be founs in the [unnet_segmentation.ipynb](dl_part/unnet_segmentation.ipynb)
 
 In the notebook we used this code to check if pur custom implementation of the nnUNet exists in the configuration files of the nnUNet. 
 
@@ -166,11 +181,7 @@ In the notebook we used this code to check if pur custom implementation of the n
 
 ```python
 file_path = "nnUNet/nnunet/training/network_training/nnUNetTrainerV2_Fast.py"
-if os.path.exists(file_path):
-    print(f"The file nnUNetTrainerV2_Fast exists, do nothing.")
-else:
-    shutil.copy('nnUNetTrainerV2_Fast.py', "nnUNet/nnunet/training/network_training/")
-    print(f"The file nnUNetTrainerV2_Fast exists does not exist. Making a copy on trainning dir")
+create_special_trainer(file_path)
 ```
 
 To clone the repository and used the V1 of the nnUNet, since the V2 lack the inference part we decide to used the version with inference implementation.
@@ -185,7 +196,7 @@ To install all the dependencies of the nnUNet:
 ! cd nnUNet; pip install -e .
 ```
 
-To check the gpu and controller you can run `nvidia-smi` or our custom python script on the [notebook](dl_part/unnet_segmentation.ipynb). The output should look like this of both commands:
+To check the gpu and controller you can run `nvidia-smi` or our custom python script `check_gpu()`. The output should look like this of both commands:
 
 ```
 
